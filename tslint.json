@@ -120,13 +120,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "bc",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "bc",
       "kebab-case"
     ],
     "no-output-on-prefix": true,
@@ -138,6 +138,6 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": false // bcodes set to false
   }
 }
