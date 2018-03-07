@@ -1,10 +1,11 @@
 {
   "name": "@bcodes/ngx-routerlink-delay",
+  "description": "Extension of the RouterLinkWithHref directive a[routerLink] with an additional @Input data binding for delaying navigation",
   "version": "1.0.0",
   "repository": "https://github.com/briancodes/ngx-routerlink-delay.git",
   "author": "briancodes",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "peerDependencies": {
     "@angular/core": ">=5.2.0",
     "@angular/common": ">=5.2.0",
