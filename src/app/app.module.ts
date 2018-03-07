@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 
-import { RouterLinkDelayModule } from '@bcodes/ngx-routerlink-delay';
+import { RouterLinkDelayModule } from '../../lib/src/router-link-delay.module';
 import { PageOneComponent } from './pages/page-one/page-one.component';
 import { PageTwoComponent } from './pages/page-two/page-two.component';
 
