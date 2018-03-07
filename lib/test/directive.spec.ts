@@ -82,7 +82,6 @@ let links: DebugElement[];
 let pageOneLink: DebugElement;
 let pageTwoLink: DebugElement;
 
-// @see https://github.com/angular/angular/blob/master/aio/content/examples/testing/src/app/app.component.router.spec.ts
 describe('Routing with RouterLinkWithHrefDelay', () => {
 
     // run before each enclosed spec (it)
@@ -229,9 +228,10 @@ function createComponent() {
 
 // **********************
 // Helper Functions:
+// Examples from docs
+// @see https://github.com/angular/angular/blob/master/aio/content/examples/testing/src/app/app.component.router.spec.ts
 // See https://github.com/angular/angular/blob/master/aio/content/examples/testing/src/testing/index.ts
 
-// See https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 /** Button events to pass to `DebugElement.triggerEventHandler` for RouterLink event handler */
 const ButtonClickEvents = {
     left: { button: 0 },
@@ -253,7 +253,6 @@ function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents
  * Wait a tick, then detect changes, and tick again
  */
 function advance(time?: number): void {
-
     tick(); // wait while navigating
     fixtureAppComponent.detectChanges(); // update view
     tick(); // wait for async data to arrive
