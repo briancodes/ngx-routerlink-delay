@@ -1,6 +1,6 @@
 # NOTE: WIP - Do not install yet
 
-# NgxRouterlinkDelay
+# @bcodes/ngx-routerlink-delay
 
 Extension of the RouterLinkWithHref directive `a[routerLink]` with an additional `@Input` data binding for delaying navigation: `[navigationDelay]="100"`
 
