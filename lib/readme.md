@@ -15,7 +15,7 @@ npm install @bcodes/ngx-routerlink-delay
 ```
 To use the extended `routerLink` directive, import the module:
 ```javascript
-import { RouterLinkDelayModule } from '@bcodes/ngx-routerlink-delay';`
+import { RouterLinkDelayModule } from '@bcodes/ngx-routerlink-delay';
 ```
 Replace the default `routerLink` and `routerLinkActive` selectors with the extended ones: 
 
