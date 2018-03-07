@@ -1,8 +1,9 @@
-import { Directive, Input, HostListener } from '@angular/core';
+import { Directive, Input, HostListener, OnDestroy } from '@angular/core';
 import { RouterLinkWithHref, Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
+import { ISubscription } from 'rxjs/Subscription';
 
 /**
  * Extends {@link RouterLinkWithHref}
@@ -11,7 +12,7 @@ import 'rxjs/add/observable/timer';
 @Directive({
     selector: 'a[bcRouterLink]'
 })
-export class RouterLinkWithHrefDelay extends RouterLinkWithHref {
+export class RouterLinkWithHrefDelay extends RouterLinkWithHref implements OnDestroy {
 
     @Input() navigationDelay = 0;
 
@@ -19,6 +20,8 @@ export class RouterLinkWithHrefDelay extends RouterLinkWithHref {
     set bcRouterLink(commands: any[] | string) {
         this.routerLink = commands;
     }
+
+    private timerSubscription: ISubscription;
 
     constructor(router: Router, route: ActivatedRoute, locationStrategy: LocationStrategy) {
         super(router, route, locationStrategy);
@@ -36,12 +39,20 @@ export class RouterLinkWithHrefDelay extends RouterLinkWithHref {
         }
 
         // Omits Observable.timer 'period' argument so  runs once
-        const timerSub = Observable.timer(this.navigationDelay)
+        this.timerSubscription = Observable.timer(this.navigationDelay)
             .subscribe(t => {
-                timerSub.unsubscribe();
+                this.timerSubscription.unsubscribe();
                 super.onClick(button, ctrlKey, metaKey, shiftKey);
             });
 
         return false;
+    }
+
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        // If the component is destroyed before the timer completes
+        if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+        }
     }
 }

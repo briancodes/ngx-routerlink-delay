@@ -6,26 +6,43 @@ import { By } from '@angular/platform-browser';
 import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
 
-import { RouterLinkDelayModule } from '../../router-link-delay.module';
-import { RouterLinkWithHrefDelay } from '../router-link-delay';
-import { create } from 'domain';
+import { RouterLinkDelayModule, RouterLinkWithHrefDelay } from '../../../../dist/lib';
 
 // **********************
 // Test Components
 
+const firstDelay = 1000;
+const secondDelay = 150;
+
 @Component({
     template: `
-        <a [bcRouterLink]="['/page-one']" bcRouterLinkActive="active" [navigationDelay]="1000">
+        <a *ngIf="showPageOneLink"
+            [bcRouterLink]="['/page-one']"
+            bcRouterLinkActive="active"
+            [navigationDelay]="pageOneDelay"
+            [preserveFragment]="isPreserveFragment"
+            >
             Page One
         </a>
-        <a bcRouterLink="/page-two" bcRouterLinkActive="active" [navigationDelay]="2000">
+        <a [bcRouterLink]="['page-two']"
+            bcRouterLinkActive="active"
+            [navigationDelay]="pageTwoDelay"
+            [skipLocationChange]="isSkipLocationChange">
             Page Two
         </a>
+
         <div></div>
         <router-outlet></router-outlet>
     `
 })
 class AppComponent {
+    pageOneDelay = firstDelay;
+    pageTwoDelay = secondDelay;
+
+    showPageOneLink = true;
+
+    isPreserveFragment = false;
+    isSkipLocationChange = false;
 }
 
 @Component({
@@ -58,8 +75,8 @@ const routes: Routes = [
 
 let location: SpyLocation;
 let router: Router;
-let fixture: ComponentFixture<AppComponent>;
-let links;
+let fixtureAppComponent: ComponentFixture<AppComponent>;
+let links: DebugElement[];
 
 let pageOneLink: DebugElement;
 let pageTwoLink: DebugElement;
@@ -88,16 +105,120 @@ describe('Routing with RouterLinkWithHrefDelay', () => {
         expectLocationPathToEqual('/page-zero');
         expectFixtureToContain(PageZeroComponent);
     }));
+
+    it('should navigate to "Page One" after delay, become "active" ', fakeAsync(() => {
+        createComponent();
+        click(pageOneLink);
+        tick(firstDelay / 2);
+        expectLocationPathToEqual('/page-zero'); // no navigation yet
+
+        // Check active class
+        const classes = pageOneLink.classes;
+        expect(classes.active).toBe(undefined);
+
+        tick(firstDelay / 2);
+        expectLocationPathToEqual('/page-one'); // navigates after delay
+        expectFixtureToContain(PageOneComponent);
+
+        // Check active class set
+        expect(classes.active).toBe(true);
+    }));
+
+    it('should navigate to "Page Two" after delay, become "active" ', fakeAsync(() => {
+        createComponent();
+        click(pageTwoLink);
+        tick(secondDelay / 2);
+        expectLocationPathToEqual('/page-zero');
+
+        // Check active class
+        const classes = pageTwoLink.classes;
+        expect(classes.active).toBe(undefined);
+
+        tick(secondDelay / 2);
+        expectLocationPathToEqual('/page-two');
+        expectFixtureToContain(PageTwoComponent);
+
+        // Check active class set
+        expect(classes.active).toBe(true);
+
+    }));
+
+    it('should not navigate if right click or ctrlKey pressed ', fakeAsync(() => {
+        createComponent();
+        // Right Click
+        click(pageOneLink, ButtonClickEvents.right);
+        tick(firstDelay);
+        expectLocationPathToEqual('/page-zero');
+
+        // Ctrl Key
+        click(pageOneLink, ButtonClickEvents.ctrlKey);
+        tick(firstDelay);
+        expectLocationPathToEqual('/page-zero');
+
+        // Make sure not false positives - e.g. that tick(firstDelay) would have navigated
+        click(pageOneLink);
+        tick(firstDelay);
+        expectLocationPathToEqual('/page-one');
+
+    }));
+
+    it('should not navigate if ngOnDestroy() called before delay is complete ', fakeAsync(() => {
+        createComponent();
+
+        click(pageOneLink);
+        tick(firstDelay / 2);
+        expectLocationPathToEqual('/page-zero');
+
+        // trigger ngOnDestroy of the <a> element, and it's directives
+        fixtureAppComponent.componentInstance.showPageOneLink = false;
+        fixtureAppComponent.detectChanges();
+
+        // Complete the timer
+        tick(firstDelay);
+        expectLocationPathToEqual('/page-zero');
+
+    }));
+
+    it('directive inputs for super class "routerLink" should work e.g. preserveFragment, skipLocationChagne ', fakeAsync(() => {
+        createComponent();
+
+        expectLocationPathToEqual('/page-zero');
+        // Set a fragment on /page-zero
+        router.navigate(['page-zero'], {fragment: 'top'});
+        tick();
+        expectLocationPathToEqual('/page-zero#top');
+
+        // Update preserveFragment on the page-one link
+        fixtureAppComponent.componentInstance.isPreserveFragment = true;
+        fixtureAppComponent.detectChanges();
+
+        click(pageOneLink);
+        tick(firstDelay);
+        expectLocationPathToEqual('/page-one#top'); // fragment was preserved
+
+        // Update skipLocationChange on the page-two link
+        fixtureAppComponent.componentInstance.isSkipLocationChange = true;
+        fixtureAppComponent.detectChanges();
+
+        click(pageTwoLink);
+        tick(secondDelay);
+        // Location should not have changed...
+        expectLocationPathToEqual('/page-one#top');
+        // ...but the Page Two component should be loaded
+        expectFixtureToContain(PageTwoComponent);
+
+    }));
 });
 
 function createComponent() {
-    fixture = TestBed.createComponent(AppComponent);
+    fixtureAppComponent = TestBed.createComponent(AppComponent);
+    fixtureAppComponent.detectChanges();
 
-    const injector = fixture.debugElement.injector;
+    const injector = fixtureAppComponent.debugElement.injector;
     location = injector.get(Location) as SpyLocation;
     router = injector.get(Router);
 
-    links = fixture.debugElement.queryAll(By.directive(RouterLinkWithHrefDelay));
+    links = fixtureAppComponent.debugElement.queryAll(By.directive(RouterLinkWithHrefDelay));
     pageOneLink = links[0];
     pageTwoLink = links[1];
 
@@ -113,7 +234,8 @@ function createComponent() {
 /** Button events to pass to `DebugElement.triggerEventHandler` for RouterLink event handler */
 const ButtonClickEvents = {
     left: { button: 0 },
-    right: { button: 2 }
+    right: { button: 2 },
+    ctrlKey: { ctrlKey: true },
 };
 
 /** Simulate element click. Defaults to mouse left-button click event. */
@@ -129,9 +251,10 @@ function click(el: DebugElement | HTMLElement, eventObj: any = ButtonClickEvents
  * Advance to the routed page
  * Wait a tick, then detect changes, and tick again
  */
-function advance(): void {
+function advance(time?: number): void {
+
     tick(); // wait while navigating
-    fixture.detectChanges(); // update view
+    fixtureAppComponent.detectChanges(); // update view
     tick(); // wait for async data to arrive
 }
 
@@ -140,7 +263,7 @@ function expectLocationPathToEqual(path: string, expectationFailOutput?: any) {
 }
 
 function expectFixtureToContain(type: Type<any>): any {
-    const el = fixture.debugElement.query(By.directive(type));
-    expect(el).toBeTruthy('expected an element for ' + type.name);
+    const el = fixtureAppComponent.debugElement.query(By.directive(type));
+    expect(el).toBeTruthy('expected an element of type ' + type.name);
     return el;
 }
