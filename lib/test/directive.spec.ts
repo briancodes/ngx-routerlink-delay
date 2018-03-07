@@ -6,7 +6,8 @@ import { By } from '@angular/platform-browser';
 import { SpyLocation } from '@angular/common/testing';
 import { Location } from '@angular/common';
 
-import { RouterLinkDelayModule, RouterLinkWithHrefDelay } from '../../../../dist/lib';
+// Importing from the distibutable folder
+import { RouterLinkDelayModule, RouterLinkWithHrefDelay } from '../../dist/lib';
 
 // **********************
 // Test Components

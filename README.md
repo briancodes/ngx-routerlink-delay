@@ -1,3 +1,5 @@
+# NOTE: WIP - Do not install yet
+
 # NgxRouterlinkDelay
 
 Packaged as an Angular compliant module using [ng-packagr](https://github.com/dherges/ng-packagr)
