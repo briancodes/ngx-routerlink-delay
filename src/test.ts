@@ -18,3 +18,14 @@ getTestBed().initTestEnvironment(
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
+
+
+/**
+ * In tsconfig.spec.json we 'include' the ../lib/.. specs to be compiled
+ * We have to add the tests to the 'context'
+ * @see https://stackoverflow.com/a/47368459
+ * @see https://webpack.js.org/guides/dependency-management/#require-context
+ */
+
+const context_lib = require.context('../lib', true, /\.spec\.ts$/);
+context_lib.keys().map(context_lib);
