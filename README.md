@@ -1,20 +1,31 @@
-# NOTE: WIP - Do not install yet
+[![Build Status](https://travis-ci.org/briancodes/ngx-routerlink-delay.svg?branch=master)](https://travis-ci.org/briancodes/ngx-routerlink-delay)
 
 # @bcodes/ngx-routerlink-delay
 
-Extension of the RouterLinkWithHref directive `a[routerLink]` with an additional `@Input` data binding for delaying navigation: `[navigationDelay]="100"`
+Extension of the RouterLinkWithHref directive `a[routerLink]` with an additional `@Input` data binding for delaying navigation
 
-Packaged as an Angular compliant module using [ng-packagr](https://github.com/dherges/ng-packagr)
+Packaged as an Angular module using [ng-packagr](https://github.com/dherges/ng-packagr)
 
-Project generated with [Angular CLI](https://github.com/angular/angular-cli)
+Development project generated with [Angular CLI](https://github.com/angular/angular-cli)
 
 # Usage
 
 ```bash
 npm install @bcodes/ngx-routerlink-delay
 ```
-Replace `routerLink` with `bcRouterLink` and `routerLinkActive` with `bcRouterLinkActive`
+To use the extended `routerLink` directive, import the module:
+```javascript
+import { RouterLinkDelayModule } from '@bcodes/ngx-routerlink-delay';`
+```
+Replace the default `routerLink` and `routerLinkActive` selectors with the extended ones: 
 
+* `routerLink` -> `bcRouterLink` 
+* `routerLinkActive` -> `bcRouterLinkActive`
+
+The navigation delay `@Input` is in milliseconds: 
+* [navigationDelay]="1000"
+
+### Example
 `app.component.html`
 ```html
 <div>
@@ -51,7 +62,7 @@ import { PageTwoComponent } from './pages/page-two/page-two.component';
 })
 export class AppModule { }
 ```
-> Internally `routerLinkActive` queries the template for the `type` of the `routerLink` directive. Extending `routerLink` means we also have to extend `routerLinkActive` to query for the new `type` 
+> **Why bcRouterLinkActive?** Internally `routerLinkActive` queries the template using the `type` of the `routerLink` directive i.e. `RouterLinkWithHref`. Extending `routerLink` meant we also had to extend `routerLinkActive` to query for the new `type`
 
 # Library Development: Build, Run, Test
 
@@ -61,9 +72,13 @@ export class AppModule { }
 
 This will create a `dist/lib` folder with generated Angular module for distribution
 
-### Local symbolic npm link
+### Live Reload
 
-For testing the bundled module locally, you can use `npm link`. You will firstly need to replace the `import` in `app.module.ts` as follows: 
+The library source (*lib/src*) is located alongside a ready-to-run *Angular ClI* project. The library module has been imported in `app.module.ts`, and is ready to roll as is. The project can be served with `ng serve`, and any changes made to the the directive source files in *lib/src* will trigger a live reload
+
+### Symbolic npm link
+
+For testing the *bundled* module locally, you can use `npm link`. You will firstly need to replace the `import` in `app.module.ts` as follows: 
 
 ```javascript
 import { RouterLinkDelayModule } from '../../lib/src/router-link-delay.module';
