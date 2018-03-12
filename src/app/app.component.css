@@ -1,0 +1,108 @@
+.app {
+    width: 100%;
+    height: 100%;
+}
+
+.menu {
+    position: absolute;
+    z-index: 1;
+    width: 280px;
+    top: 0;
+    bottom: 0;
+    left: -280px;
+    padding-top: 60px;
+    background-color: #2e3033;
+    padding-left: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: none;
+    transition: 0.4s;
+}
+.menu.open {
+    left: 0;
+    box-shadow: 5px 0 20px rgba(67, 67, 67, 0.49);
+}
+.menu li {
+    margin: 16px 0;
+}
+.menu a {
+    color: #3273dc;
+    transition: .25s ease-in;
+    border-left: 2px solid rgba(220, 50, 152, 0);
+    padding-left: 7px;
+}
+.menu a:hover {
+    color: #c8c7c7;
+}
+.menu a.active {
+    border-left: 2px solid #3273dc;
+    color: #c8c7c7;
+    pointer-events: none;
+}
+
+.menu-button {
+    position: fixed;
+    top: 20px;
+    left: 30px;
+    z-index: 2;
+}
+
+/* Checkbox */
+.row {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    margin-right: 5px;
+    border-top: 2px solid gray;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.row-label {
+    color: #c8c7c7;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.round-checkbox {
+    position: relative;
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    background: powderblue;
+    border-radius: 100%;
+}
+
+.round-checkbox label {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border-radius: 100px;
+    transition: all .125s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    background: rgb(209, 209, 209);
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.round-checkbox input[type=checkbox] {
+    visibility: hidden;
+}
+.round-checkbox input[type=checkbox]:checked+label {
+    background: rgb(56, 54, 179);
+}
+
+::ng-deep .demo-page {
+    animation: item-fade-in .5s 1;
+}
+
+@keyframes item-fade-in {
+    0% {
+        transform: scale(.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

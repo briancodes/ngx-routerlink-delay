@@ -1,12 +1,42 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div>
+<div class="app">
 
-    <a [bcRouterLink]="['/page-one']" bcRouterLinkActive="active" [navigationDelay]="1000">
-        Page One
-    </a>
-    <a bcRouterLink="/page-two" bcRouterLinkActive="active" [navigationDelay]="2000">
-        Page Two
-    </a>
+    <button class="menu-button button is-info" (click)="menuButtonClick($event)">
+        Menu
+    </button>
+    <div class="menu" [ngClass]="{'open': isMenuOpen}">
+        <ul>
+            <li>
+                <a *ngIf="isDelay" [bcRouterLink]="['/page-one']" bcRouterLinkActive="active" [navigationDelay]="400" (click)="onLinkClick($event)">
+                    Page One
+                </a>
+                <a  *ngIf="!isDelay" [routerLink]="['/page-one']" routerLinkActive="active" (click)="onLinkClick($event)">
+                    Page One
+                </a>
+            </li>
+            <li>
+                <a *ngIf="isDelay" bcRouterLink="/page-two" bcRouterLinkActive="active" [navigationDelay]="400" (click)="onLinkClick($event)">
+                    Page Two
+                </a>
+                <a *ngIf="!isDelay" routerLink="/page-two" routerLinkActive="active" (click)="onLinkClick($event)">
+                    Page Two
+                </a>
+            </li>
+        </ul>
+
+        <div class="row">
+            <label class="row-label" for="enableDelay">
+                Enable Delay
+            </label>
+            <div class="round-checkbox">
+                <input type="checkbox" checked
+                        id="enableDelay"
+                        (change)="onCheckboxChange($event)" >
+                <label for="enableDelay"></label>
+            </div>
+        </div>
+
+    </div>
 
     <router-outlet></router-outlet>
 </div>
