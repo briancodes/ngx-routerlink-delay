@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
             border-radius: 10px;
             background-size: cover;
             background-position: top center;
-            background-image: url('/assets/pexels-photo-755385.jpeg');
+            background-image: url('assets/pexels-photo-755385.jpeg');
         }
         h1 {
             text-transform: uppercase;
