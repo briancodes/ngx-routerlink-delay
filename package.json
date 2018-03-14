@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build:lib": "rimraf dist && ng-packagr -p lib/package.json",
-    "test:lib": "npm run build:lib && ng test"
+    "test:lib": "npm run build:lib && ng test",
+    "analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/app/stats.json"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +49,7 @@
     "rimraf": "^2.6.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "webpack-bundle-analyzer": "^2.11.1"
   }
 }

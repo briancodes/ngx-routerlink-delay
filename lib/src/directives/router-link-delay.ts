@@ -1,9 +1,8 @@
 import { Directive, Input, HostListener, OnDestroy } from '@angular/core';
 import { RouterLinkWithHref, Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
 import { ISubscription } from 'rxjs/Subscription';
+import { timer } from 'rxjs/observable/timer';
 
 /**
  * Extends {@link RouterLinkWithHref}
@@ -39,7 +38,7 @@ export class RouterLinkWithHrefDelay extends RouterLinkWithHref implements OnDes
         }
 
         // Omits Observable.timer 'period' argument so  runs once
-        this.timerSubscription = Observable.timer(this.navigationDelay)
+        this.timerSubscription = timer(this.navigationDelay)
             .subscribe(t => {
                 this.timerSubscription.unsubscribe();
                 super.onClick(button, ctrlKey, metaKey, shiftKey);
