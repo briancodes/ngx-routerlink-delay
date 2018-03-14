@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/briancodes/ngx-routerlink-delay.svg?branch=master)](https://travis-ci.org/briancodes/ngx-routerlink-delay)
+[![Build with Angular CLI](https://img.shields.io/badge/built%20with-Angular%20CLI-blue.svg)](https://github.com/angular/angular-cli)
 
 # @bcodes/ngx-routerlink-delay
 
