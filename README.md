@@ -121,6 +121,11 @@ context_lib.keys().map(context_lib);
 
 Run the tests with `ng test`, or `npm run test:lib` to do a build and test
 
+## GitHub Pages
+```
+ng build --prod --base-href "https://briancodes.github.io/ngx-routerlink-delay/"
+ngh --dir="dist/app" --message="Commit message"
+```
 ## License
 
 This project is licensed under the terms of the MIT license
