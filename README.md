@@ -11,6 +11,8 @@ Development project generated with [Angular CLI](https://github.com/angular/angu
 
 # Usage
 
+>**Rxjs v6.2.0 Update:** For use with Angular v6 use the latest (v2.0.0 Release)[https://github.com/briancodes/ngx-routerlink-delay/releases/tag/v2.0.0) on npm
+
 ```bash
 npm install @bcodes/ngx-routerlink-delay
 ```
