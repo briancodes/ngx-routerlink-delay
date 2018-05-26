@@ -1,9 +1,7 @@
 import { Directive, Input, HostListener, OnDestroy } from '@angular/core';
 import { RouterLinkWithHref, Router, ActivatedRoute } from '@angular/router';
 import { LocationStrategy } from '@angular/common';
-import { ISubscription } from 'rxjs/Subscription';
-import { timer } from 'rxjs/observable/timer';
-
+import { timer, SubscriptionLike } from 'rxjs';
 /**
  * Extends {@link RouterLinkWithHref}
  * @see https://github.com/angular/angular/blob/master/packages/router/src/directives/router_link.ts
@@ -20,7 +18,7 @@ export class RouterLinkWithHrefDelay extends RouterLinkWithHref implements OnDes
         this.routerLink = commands;
     }
 
-    private timerSubscription: ISubscription;
+    private timerSubscription: SubscriptionLike;
 
     constructor(router: Router, route: ActivatedRoute, locationStrategy: LocationStrategy) {
         super(router, route, locationStrategy);
